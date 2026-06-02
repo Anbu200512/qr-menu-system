@@ -135,10 +135,17 @@ setCategories(categoryData?.categories || [])
       setShowAddModal(false)
       resetForm()
       fetchData()
-    } catch (error) {
-      console.log(error)
-      toast.error("Add food failed")
-    }
+    } 
+    catch (error) {
+  console.log("FULL ERROR:", error)
+  console.log("RESPONSE:", error.response)
+  console.log("DATA:", error.response?.data)
+
+  alert(
+    error.response?.data?.message ||
+    "Failed to add food"
+  )
+}
   }
 
   // EDIT FOOD
