@@ -2463,7 +2463,10 @@ if (tab.id === "favorites") {
                   <div className="fp-cart-items">
                     {cart.map((item) => (
                       <div key={item._id} className="fp-cart-item">
-                        <img src={`http://localhost:5000${item.image}`} alt={item.name} />
+                        <img
+  src={`${import.meta.env.VITE_API_URL}${item.image}`}
+  alt={item.name}
+/>
                         <div className="fp-cart-item-info">
                           <div className="fp-cart-item-name">{item.name}</div>
                           <div className="fp-cart-item-sub">
