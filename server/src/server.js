@@ -6,7 +6,7 @@ import { createServer } from "http"
 import { Server } from "socket.io"
 
 import connectDB from "./config/db.js"
-
+import path from "path"
 import foodRoutes from "./routes/foodRoutes.js"
 import categoryRoutes from "./routes/categoryRoutes.js"
 import orderRoutes from "./routes/orderRoutes.js"
@@ -23,7 +23,15 @@ connectDB()
 const app = express()
 
 // MIDDLEWARE
-app.use(cors())
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      process.env.CLIENT_URL,
+    ],
+    credentials: true,
+  })
+)
 
 app.use(express.json())
 
@@ -36,7 +44,7 @@ app.use(
 // STATIC UPLOADS
 app.use(
   "/uploads",
-  express.static("uploads")
+  express.static(path.resolve("uploads"))
 )
 
 // ROUTES
@@ -93,8 +101,12 @@ const httpServer =
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      process.env.CLIENT_URL,
+    ],
     methods: ["GET", "POST"],
+    credentials: true,
   },
 
   pingTimeout: 60000,

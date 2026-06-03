@@ -43,7 +43,7 @@ function MenuPage() {
   const customerSessionRef = useRef("")
   const { tableId } = useParams()
 
-  console.log("TABLE ID:", tableId)
+  
 const [showWaiterSuccess, setShowWaiterSuccess] =
   useState(false)
   const [foods, setFoods] = useState([])
@@ -92,8 +92,12 @@ const [showOrdersModal, setShowOrdersModal] = useState(false)
   })
   
   const categoriesScrollRef = useRef(null)
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768)
-  
+const [isDesktop, setIsDesktop] =
+  useState(
+    typeof window !== "undefined"
+      ? window.innerWidth >= 768
+      : false
+  )  
   // Category Icons Mapping
   const categoryIcons = {
     "All": <UtensilsCrossed size={20} />,
@@ -176,7 +180,7 @@ if (!currentSessionId) return
       const response = await axios.get(
 `${import.meta.env.VITE_API_URL}/api/orders/session/${currentSessionId}`
 )
-      console.log("TRACK RESPONSE:", response.data)
+    
       if (response.data.success) {
         setActiveOrders(response.data.orders || [])
       }
@@ -219,10 +223,6 @@ if (!savedCustomerSession) {
   )
 }
 
-console.log(
-  "CUSTOMER SESSION:",
-  savedCustomerSession
-)
 
 setCustomerSessionId(
   savedCustomerSession
@@ -445,7 +445,6 @@ localStorage.setItem(
         totalAmount: getCartTotal(),
       }
 
-      console.log("ORDER DETAILS:", orderDetails)
 
       await createOrder(orderDetails)
 
@@ -515,8 +514,12 @@ setShowCallModal(false)
   }
 
  const displayFoods = showFavoritesOnly
-  ? (foods || []).filter(food)
-  : (foods || [])
+  ? foods.filter(food =>
+      favorites.some(
+        fav => fav._id === food._id
+      )
+    )
+  : foods
 
   // FILTER FOODS
   const filteredFoods = (displayFoods || []).filter((food) => {
@@ -599,7 +602,6 @@ setShowCallModal(false)
 
     if (nearBottom) {
 
-      console.log("SCROLL TRIGGERED")
 
       setVisibleItems((prev) => {
 
@@ -1813,7 +1815,10 @@ onClick={() => {
                   return (
                     <div key={food._id} className="fp-food-card">
                       <div className="fp-food-img-wrap">
-                        <img src={` ${import.meta.env.VITE_API_URL}${food.image}`} alt={food.name} />
+                        <img
+  src={`${import.meta.env.VITE_API_URL}${food.image}`}
+  alt={food.name}
+/>
                         <button
   className="fp-favorite-btn"
   onClick={() => toggleFavorite(food)}
@@ -1953,9 +1958,9 @@ onClick={() => {
 
   </div>
 
-  {activeOrders.map((order, index) => (
+ {activeOrders.map((order) => (
   <div
-    key={index}
+    key={order._id || order.orderId}
     className="fp-order-card"
   >
     <div className="fp-order-header">
@@ -1986,11 +1991,11 @@ onClick={() => {
 
     <div className="fp-order-divider" />
 
-    {order.items?.map((item, i) => (
-      <div
-        key={i}
-        className="fp-order-item-row"
-      >
+   {order.items?.map((item) => (
+  <div
+    key={`${item.name}-${item.price}`}
+    className="fp-order-item-row"
+  >
         <span>
           {item.name} × {item.quantity}
         </span>
@@ -2121,9 +2126,9 @@ onClick={() => {
                 >
 
                   <img
-                    src={` ${import.meta.env.VITE_API_URL}${food.image}`}
-                    alt={food.name}
-                  />
+  src={`${import.meta.env.VITE_API_URL}${food.image}`}
+  alt={food.name}
+/>
 
                   <div className="fp-cart-item-info">
 
@@ -2542,8 +2547,11 @@ if (tab.id === "favorites") {
                 {activeOrders.map((order) => (
                   <div key={order._id} className="fp-order-card">
                     <div className="fp-order-id"><Receipt size={13} />{order.orderId}</div>
-                    {order.items.map((item, index) => (
-                      <div key={index} className="fp-order-item-row">
+                    {order.items.map((item) => (
+  <div
+    key={`${item.name}-${item.price}`}
+    className="fp-order-item-row"
+  >
                         <span>{item.name} × {item.quantity}</span>
                         <span>₹{item.price * item.quantity}</span>
                       </div>
@@ -2770,8 +2778,11 @@ if (tab.id === "favorites") {
                         order.status === "completed" ? "fp-status-completed" : "fp-status-default"
                       }`}>{order.status}</span>
                     </div>
-                    {order.items.map((item, index) => (
-                      <div key={index} className="fp-order-item-row">
+                    {order.items.map((item) => (
+  <div
+    key={`${item.name}-${item.price}`}
+    className="fp-order-item-row"
+  >
                         <span>{item.name} × {item.quantity}</span>
                         <span>₹{item.price * item.quantity}</span>
                       </div>
