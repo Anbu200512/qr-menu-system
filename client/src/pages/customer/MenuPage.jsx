@@ -44,7 +44,8 @@ function MenuPage() {
   const { tableId } = useParams()
 
   console.log("TABLE ID:", tableId)
-
+const [showWaiterSuccess, setShowWaiterSuccess] =
+  useState(false)
   const [foods, setFoods] = useState([])
   const [banners, setBanners] = useState([])
   const [categories, setCategories] = useState([])
@@ -497,8 +498,13 @@ sessionStorage.setItem(
         customerName,
         tableNumber: finalTableNumber,
       })
-      alert("Waiter called successfully")
-      setShowCallModal(false)
+setShowWaiterSuccess(true)
+
+setTimeout(() => {
+  setShowWaiterSuccess(false)
+}, 3000)
+
+setShowCallModal(false)
       
       setTableNumber("")
     } catch (error) {
@@ -1552,15 +1558,29 @@ sessionStorage.setItem(
       )}
 
       {/* Toast */}
-      {showOrderSuccess && (
-        <div className="fp-toast">
-          <CheckCircle className="fp-toast-icon" size={22} />
-          <div>
-            <h4>Order placed successfully!</h4>
-            <p>Your order has been sent to the kitchen</p>
-          </div>
-        </div>
-      )}
+     {/* Toast */}
+{showOrderSuccess && (
+  <div className="fp-toast">
+    <CheckCircle className="fp-toast-icon" size={22} />
+    <div>
+      <h4>Order placed successfully!</h4>
+      <p>Your order has been sent to the kitchen</p>
+    </div>
+  </div>
+)}
+
+{showWaiterSuccess && (
+  <div className="fp-toast">
+    <CheckCircle
+      className="fp-toast-icon"
+      size={22}
+    />
+    <div>
+      <h4>Waiter has been notified!</h4>
+      <p>Please wait a moment.</p>
+    </div>
+  </div>
+)}
 
       <div className="fp-root">
 
@@ -1695,7 +1715,7 @@ onChange={(e) => {
 
           {/* Categories */}
           <div className="fp-categories-section">
-            <div className="fp-section-title">Browse</div>
+            {/* <div className="fp-section-title">Browse</div> */}
             <div className="fp-categories-scroll" ref={categoriesScrollRef}>
               <button
                 onClick={() => {
