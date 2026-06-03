@@ -11,12 +11,15 @@ const loginUser = async (req, res) => {
         name: "Admin",
         email: process.env.ADMIN_EMAIL,
         isAdmin: true,
-        token: process.env.JWT_SECRET || "admin_token",
+        token:
+          process.env.JWT_SECRET ||
+          "admin_token",
       })
     }
 
     return res.status(401).json({
-      message: "Invalid email or password",
+      message:
+        "Invalid email or password",
     })
   } catch (error) {
     return res.status(500).json({
@@ -25,6 +28,4 @@ const loginUser = async (req, res) => {
   }
 }
 
-module.exports = {
-  loginUser,
-}
+export { loginUser }

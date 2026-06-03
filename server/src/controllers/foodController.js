@@ -66,6 +66,10 @@ export const getFoodById =
 export const createFood =
   async (req, res) => {
     try {
+
+       console.log("BODY:", req.body)
+    console.log("FILE:", req.file)
+
       const {
         name,
         price,
@@ -82,13 +86,10 @@ export const createFood =
         !description ||
         !category
       ) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message:
-              "All fields are required",
-          })
+        return res.status(400).json({
+          success: false,
+          message: "All fields are required",
+        })
       }
 
       // IMAGE CHECK
