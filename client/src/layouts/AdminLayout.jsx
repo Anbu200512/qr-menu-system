@@ -21,6 +21,7 @@ import {
   FaSun,
   FaCog,
   FaRegBell,
+  FaBullhorn,
 } from "react-icons/fa"
 
 import { useState, useEffect } from "react"
@@ -136,6 +137,7 @@ setNotifications(latestActivity)
     { name: "Banners", path: "/admin/banners", icon: <FaImages /> },
     { name: "Waiter Calls", path: "/admin/waiter-calls", icon: <FaBell /> },
     { name: "QR Generator", path: "/admin/qr-generator", icon: <FaQrcode /> },
+    { name: "Advertisements", path: "/admin/advertisements", icon: <FaBullhorn /> },
   ]
 
   return (

@@ -15,6 +15,7 @@ import bannerRoutes from "./routes/bannerRoutes.js"
 import waiterCallRoutes from "./routes/waiterCallRoutes.js"
 import tableRoutes from "./routes/tableRoutes.js"
 import revenueRoutes from "./routes/revenueRoutes.js"
+import advertisementRoutes from "./routes/advertisementRoutes.js"
 dotenv.config()
 
 // CONNECT DATABASE
@@ -86,6 +87,11 @@ app.use(
 app.use(
   "/api/revenue",
   revenueRoutes
+)
+
+app.use(
+  "/api/advertisements",
+  advertisementRoutes
 )
 
 // TEST ROUTE

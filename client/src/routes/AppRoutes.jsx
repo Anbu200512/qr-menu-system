@@ -21,6 +21,7 @@ import Banners from "../pages/admin/Banners"
 import WaiterCalls from "../pages/admin/WaiterCalls"
 import QRGenerator from "../pages/admin/QRGenerator"
 import Revenue from "../pages/admin/Revenue"
+import Advertisements from "../pages/admin/Advertisements"
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -94,6 +95,10 @@ function AppRoutes() {
 <Route
   path="qr-generator"
   element={<QRGenerator />}
+/>
+          <Route
+  path="advertisements"
+  element={<Advertisements />}
 />
         </Route>
 
