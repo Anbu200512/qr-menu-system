@@ -559,10 +559,10 @@ function MenuPage() {
       <div className="fp-food-card">
         <div className="fp-food-img-wrap">
           <img
-            src={`${import.meta.env.VITE_API_URL}${food.image}`}
-            alt={food.name}
-            loading="lazy"
-          />
+  src={food.image}
+  alt={food.name}
+  loading="lazy"
+/>
           <button
             className="fp-favorite-btn"
             onClick={() => toggleFavorite(food)}
@@ -715,10 +715,10 @@ function MenuPage() {
               return (
                 <div key={food._id} className="dp-fav-item">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${food.image}`}
-                    alt={food.name}
-                    loading="lazy"
-                  />
+  src={food.image}
+  alt={food.name}
+  loading="lazy"
+/>
                   <div className="dp-fav-info">
                     <div className="dp-fav-name">{food.name}</div>
                     <div className="dp-fav-cat">{food.category?.name}</div>
@@ -842,10 +842,10 @@ function MenuPage() {
               cart.map((item) => (
                 <div key={item._id} className="dp-cart-item">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${item.image}`}
-                    alt={item.name}
-                    loading="lazy"
-                  />
+  src={food.image}
+  alt={food.name}
+  loading="lazy"
+/>
                   <div className="dp-cart-item-info">
                     <div className="dp-cart-item-name">{item.name}</div>
                     <div className="dp-cart-item-sub">
@@ -2958,10 +2958,10 @@ function MenuPage() {
                       <div key={food._id} className="fp-food-card">
                         <div className="fp-food-img-wrap">
                           <img
-                            src={`${import.meta.env.VITE_API_URL}${food.image}`}
-                            alt={food.name}
-                            loading="lazy"
-                          />
+  src={food.image}
+  alt={food.name}
+  loading="lazy"
+/>
                           <button
                             className="fp-favorite-btn"
                             onClick={() => toggleFavorite(food)}
@@ -3208,10 +3208,10 @@ function MenuPage() {
                       return (
                         <div key={food._id} className="fp-cart-item">
                           <img
-                            src={`${import.meta.env.VITE_API_URL}${food.image}`}
-                            alt={food.name}
-                            loading="lazy"
-                          />
+  src={food.image}
+  alt={food.name}
+  loading="lazy"
+/>
                           <div className="fp-cart-item-info">
                             <div className="fp-cart-item-name">
                               {food.name}
@@ -3834,10 +3834,10 @@ function MenuPage() {
                       {cart.map((item) => (
                         <div key={item._id} className="fp-cart-item">
                           <img
-                            src={`${import.meta.env.VITE_API_URL}${item.image}`}
-                            alt={item.name}
-                            loading="lazy"
-                          />
+  src={item.image}
+  alt={item.name}
+  loading="lazy"
+/>
                           <div className="fp-cart-item-info">
                             <div className="fp-cart-item-name">
                               {item.name}
