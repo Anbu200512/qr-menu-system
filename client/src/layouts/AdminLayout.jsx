@@ -56,8 +56,7 @@ setPendingOrderCount(
       order.status !== "completed"
   ).length
 )
-console.log("ORDERS ARRAY", ordersData.orders)
-console.log("CALLS ARRAY", callsData.calls)
+
    const latestOrders =
   (ordersData.orders || [])
     .slice(0,5)

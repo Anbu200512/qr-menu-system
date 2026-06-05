@@ -4,106 +4,135 @@ import {
   Route,
 } from "react-router-dom"
 
+import { lazy, Suspense } from "react"
 import CustomerLayout from "../layouts/CustomerLayout"
 import AdminLayout from "../layouts/AdminLayout"
 
 import ProtectedRoute from "./ProtectedRoute"
-import Orders from "../pages/admin/Orders"
+
 // Customer Pages
-import MenuPage from "../pages/customer/MenuPage"
+const MenuPage = lazy(() =>
+  import("../pages/customer/MenuPage")
+)
 
 // Admin Pages
 import Login from "../pages/admin/Login"
 import Dashboard from "../pages/admin/Dashboard"
-import Foods from "../pages/admin/Foods"
-import Categories from "../pages/admin/Categories"
-import Banners from "../pages/admin/Banners"
-import WaiterCalls from "../pages/admin/WaiterCalls"
-import QRGenerator from "../pages/admin/QRGenerator"
-import Revenue from "../pages/admin/Revenue"
-import Advertisements from "../pages/admin/Advertisements"
+
+
+const Foods = lazy(() =>
+  import("../pages/admin/Foods")
+)
+
+const Orders = lazy(() =>
+  import("../pages/admin/Orders")
+)
+
+const Categories = lazy(() =>
+  import("../pages/admin/Categories")
+)
+
+const Banners = lazy(() =>
+  import("../pages/admin/Banners")
+)
+
+const WaiterCalls = lazy(() =>
+  import("../pages/admin/WaiterCalls")
+)
+
+const QRGenerator = lazy(() =>
+  import("../pages/admin/QRGenerator")
+)
+
+const Revenue = lazy(() =>
+  import("../pages/admin/Revenue")
+)
+
+const Advertisements = lazy(() =>
+  import("../pages/admin/Advertisements")
+)
 function AppRoutes() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Customer Routes */}
-        <Route
-          path="/"
-          element={<CustomerLayout />}
-        >
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          {/* Customer Routes */}
           <Route
-  path="/menu"
-  element={<MenuPage />}
-/>
+            path="/"
+            element={<CustomerLayout />}
+          >
+            <Route
+              path="/menu"
+              element={<MenuPage />}
+            />
 
-<Route
-  path="/menu/table/:tableId"
-  element={<MenuPage />}
-/>
-        </Route>
+            <Route
+              path="/menu/table/:tableId"
+              element={<MenuPage />}
+            />
+          </Route>
 
-        {/* Admin Login */}
-        <Route
-          path="/admin/login"
-          element={<Login />}
-        />
-
-        {/* Protected Admin Routes */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
+          {/* Admin Login */}
           <Route
-            path="dashboard"
-            element={<Dashboard />}
+            path="/admin/login"
+            element={<Login />}
           />
 
+          {/* Protected Admin Routes */}
           <Route
-  path="revenue"
-  element={<Revenue />}
-/>
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route
+              path="dashboard"
+              element={<Dashboard />}
+            />
 
-          <Route
-            path="orders"
-            element={<Orders />}
-          />
+            <Route
+              path="revenue"
+              element={<Revenue />}
+            />
 
-          <Route
-            path="foods"
-            element={<Foods />}
-          />
+            <Route
+              path="orders"
+              element={<Orders />}
+            />
 
-          <Route
-            path="categories"
-            element={<Categories />}
-          />
+            <Route
+              path="foods"
+              element={<Foods />}
+            />
 
-          <Route
-  path="banners"
-  element={<Banners />}
-/>
+            <Route
+              path="categories"
+              element={<Categories />}
+            />
 
-<Route
-  path="waiter-calls"
-  element={<WaiterCalls />}
-/>
+            <Route
+              path="banners"
+              element={<Banners />}
+            />
 
-<Route
-  path="qr-generator"
-  element={<QRGenerator />}
-/>
-          <Route
-  path="advertisements"
-  element={<Advertisements />}
-/>
-        </Route>
+            <Route
+              path="waiter-calls"
+              element={<WaiterCalls />}
+            />
 
-        
-      </Routes>
+            <Route
+              path="qr-generator"
+              element={<QRGenerator />}
+            />
+            <Route
+              path="advertisements"
+              element={<Advertisements />}
+            />
+          </Route>
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   )
 }

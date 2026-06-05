@@ -45,9 +45,7 @@ export const getCategories =
 // CREATE CATEGORY
 export const createCategory = async (req, res) => {
   try {
-    console.log("🔥 CATEGORY CONTROLLER HIT")
-    console.log("BODY:", req.body)
-    console.log("CATEGORY MODEL:", Category.modelName)
+    
 
     const category = await Category.create({
       name: req.body.name,
@@ -58,8 +56,7 @@ export const createCategory = async (req, res) => {
       category,
     })
   } catch (error) {
-    console.log("🔥 FULL CATEGORY ERROR")
-    console.log(error)
+    
 
     res.status(500).json({
       success: false,
