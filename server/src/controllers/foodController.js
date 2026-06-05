@@ -1,4 +1,8 @@
 import Food from "../models/Food.js"
+import { optimizeImage }
+from "../utils/imageOptimizer.js"
+
+
 
 // GET ALL FOODS
 export const getFoods = async (
@@ -7,13 +11,14 @@ export const getFoods = async (
 ) => {
   try {
     const foods =
-      await Food.find()
-        .populate(
-          "category"
-        )
-        .sort({
-          createdAt: -1,
-        })
+  await Food.find()
+    .populate("category")
+    .sort({
+      createdAt: -1,
+    })
+    .lean()
+
+    
 
     res.status(200).json({
       success: true,
@@ -67,8 +72,6 @@ export const createFood =
   async (req, res) => {
     try {
 
-       console.log("BODY:", req.body)
-    console.log("FILE:", req.file)
 
       const {
         name,

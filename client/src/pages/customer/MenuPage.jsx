@@ -137,22 +137,7 @@ function MenuPage() {
     Cake: <Coffee size={14} />,
   }
 
-  useEffect(() => {
-  const loadAds = async () => {
-    try {
-      const data =
-        await getAdvertisements()
-
-      setAdvertisements(
-        data.advertisements || []
-      )
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  loadAds()
-}, [])
+  
 
   useEffect(() => {
     const timer = setTimeout(() => setShowWelcome(false), 4000)
@@ -162,7 +147,7 @@ function MenuPage() {
   useEffect(() => {
     if (!customerSessionId) return
     fetchActiveOrder()
-    const interval = setInterval(() => fetchActiveOrder(), 5000)
+    const interval = setInterval(() => fetchActiveOrder(), 15000)
     return () => clearInterval(interval)
   }, [customerSessionId])
 
@@ -224,24 +209,39 @@ function MenuPage() {
     }
   }, [])
 
-  const fetchData = async () => {
-    try {
-      const foodData = await getFoods()
-      const categoryData = await getCategories()
-      const bannerData = await getBanners()
-      setFoods(foodData?.foods || [])
-      setCategories(categoryData?.categories || [])
-      setBanners(
-        bannerData.banners
-          .filter((banner) => banner.isActive)
-          .sort((a, b) => a.priority - b.priority)
-      )
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false)
-    }
+ const fetchData = async () => {
+  try {
+    const [
+      foodData,
+      categoryData,
+      bannerData,
+      adData,
+    ] = await Promise.all([
+      getFoods(),
+      getCategories(),
+      getBanners(),
+      getAdvertisements(),
+    ])
+
+    setFoods(foodData?.foods || [])
+    setCategories(categoryData?.categories || [])
+
+    setBanners(
+      (bannerData?.banners || [])
+        .filter((banner) => banner.isActive)
+        .sort((a, b) => a.priority - b.priority)
+    )
+
+    setAdvertisements(
+      adData?.advertisements || []
+    )
+
+  } catch (error) {
+    console.log(error)
+  } finally {
+    setLoading(false)
   }
+}
 
   const loadCartFromStorage = () => {
     const currentSessionId = customerSessionRef.current

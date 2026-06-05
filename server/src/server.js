@@ -1,6 +1,9 @@
 import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
+import compression from "compression"
+
+
 
 import { createServer } from "http"
 import { Server } from "socket.io"
@@ -22,6 +25,8 @@ dotenv.config()
 connectDB()
 
 const app = express()
+
+app.use(compression())
 
 // MIDDLEWARE
 app.use(
@@ -45,7 +50,9 @@ app.use(
 // STATIC UPLOADS
 app.use(
   "/uploads",
-  express.static(path.resolve("uploads"))
+  express.static("uploads", {
+    maxAge: "7d",
+  })
 )
 
 // ROUTES

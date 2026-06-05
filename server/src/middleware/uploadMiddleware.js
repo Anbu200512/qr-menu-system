@@ -1,5 +1,5 @@
 import multer from "multer"
-
+ import path from "path"
 // STORAGE
 const storage =
   multer.diskStorage({
@@ -11,18 +11,14 @@ const storage =
       cb(null, "uploads/")
     },
 
-    filename: (
-      req,
-      file,
-      cb
-    ) => {
-      cb(
-        null,
-        Date.now() +
-          "-" +
-          file.originalname
-      )
-    },
+   
+
+filename: (req, file, cb) => {
+  cb(
+    null,
+    Date.now() + ".webp"
+  )
+},
   })
 
 // FILE FILTER
