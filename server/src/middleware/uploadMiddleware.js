@@ -2,6 +2,7 @@ import multer from "multer"
 import { CloudinaryStorage } from "multer-storage-cloudinary"
 import cloudinary from "../config/cloudinary.js"
 
+console.log("Cloudinary Upload Middleware Loaded")
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {

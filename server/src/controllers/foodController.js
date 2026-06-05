@@ -105,6 +105,8 @@ export const createFood =
           })
       }
 
+      console.log("FILE:", req.file)
+
       // IMAGE PATH
       const imagePath =
   req.file.path
