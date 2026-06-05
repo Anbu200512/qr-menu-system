@@ -2512,7 +2512,7 @@ function MenuPage() {
                 style={{ opacity: idx === currentBannerIndex ? 1 : 0 }}
               >
                 <img
-                  src={`${import.meta.env.VITE_API_URL}${banner.image}`}
+                  src={banner.image}
                   alt={banner.title}
                   loading="lazy"
                 />
@@ -2695,7 +2695,7 @@ function MenuPage() {
     <div className="dp-ad-card">
 
       <img
-        src={`${import.meta.env.VITE_API_URL}${activeAd.image}`}
+        src={activeAd.image}
         alt={activeAd.title}
       />
 
@@ -2767,7 +2767,7 @@ function MenuPage() {
                   style={{ opacity: idx === currentBannerIndex ? 1 : 0 }}
                 >
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${banner.image}`}
+                    src={banner.image}
                     alt={banner.title}
                     loading="lazy"
                   />
@@ -3208,8 +3208,8 @@ function MenuPage() {
                       return (
                         <div key={food._id} className="fp-cart-item">
                           <img
-  src={food.image}
-  alt={food.name}
+  src={item.image}
+  alt={item.name}
   loading="lazy"
 />
                           <div className="fp-cart-item-info">

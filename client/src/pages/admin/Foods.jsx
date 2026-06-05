@@ -298,10 +298,10 @@ setCategories(categoryData?.categories || [])
           >
             <div className="col-span-2">
               <img
-                src={`${import.meta.env.VITE_API_URL}${food.image}`}
-                alt={food.name}
-                className="w-12 h-12 rounded-xl object-cover"
-              />
+  src={food.image}
+  alt={food.name}
+  className="w-12 h-12 rounded-xl object-cover"
+/>
             </div>
             <div className="col-span-3">
               <p className="font-semibold text-gray-800 dark:text-white">{food.name}</p>
@@ -370,10 +370,10 @@ setCategories(categoryData?.categories || [])
             className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden shadow-sm"
           >
             <img
-              src={`${import.meta.env.VITE_API_URL}${food.image}`}
-              alt={food.name}
-              className="w-full h-40 object-cover"
-            />
+  src={food.image}
+  alt={food.name}
+  className="w-12 h-12 rounded-xl object-cover"
+/>
             <div className="p-4">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold text-lg text-gray-800 dark:text-white">{food.name}</h3>

@@ -244,10 +244,10 @@ const [bannerForm, setBannerForm] = useState({
           >
             <div className="col-span-2">
               <img
-                src={`${import.meta.env.VITE_API_URL}${banner.image}`}
-                alt={banner.title}
-                className="w-16 h-12 rounded-lg object-cover"
-              />
+  src={banner.image}
+  alt={banner.title}
+  className="w-16 h-12 rounded-lg object-cover"
+/>
             </div>
             <div className="col-span-3">
               <p className="font-semibold text-gray-800 dark:text-white">{banner.title}</p>
@@ -306,10 +306,10 @@ const [bannerForm, setBannerForm] = useState({
             className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden shadow-sm"
           >
             <img
-              src={` ${import.meta.env.VITE_API_URL}${banner.image}`}
-              alt={banner.title}
-              className="w-full h-36 object-cover"
-            />
+  src={banner.image}
+  alt={banner.title}
+  className="w-full h-36 object-cover"
+/>
             <div className="p-4">
               <div className="flex justify-between items-start mb-2">
                 <div>
