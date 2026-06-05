@@ -54,8 +54,16 @@ const Advertisements = lazy(() =>
 function AppRoutes() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
+<Suspense
+  fallback={
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+      <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="mt-4 text-gray-600 font-medium">
+        Loading Menu...
+      </p>
+    </div>
+  }
+>        <Routes>
           {/* Customer Routes */}
           <Route
             path="/"
