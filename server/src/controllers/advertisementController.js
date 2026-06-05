@@ -30,7 +30,7 @@ console.log(req.file)
     } = req.body
 
     const image = req.file
-      ? `/uploads/${req.file.filename}`
+      ? req.file.path
       : ""
 
     const advertisement =
@@ -88,7 +88,7 @@ export const updateAdvertisement = async (req, res) => {
 
     if (req.file) {
       advertisement.image =
-        `/uploads/${req.file.filename}`
+        req.file.path
     }
 
     await advertisement.save()

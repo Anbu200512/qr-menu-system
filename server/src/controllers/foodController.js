@@ -1,6 +1,5 @@
 import Food from "../models/Food.js"
-import { optimizeImage }
-from "../utils/imageOptimizer.js"
+
 
 
 
@@ -18,7 +17,7 @@ export const getFoods = async (
     })
     .lean()
 
-    
+
 
     res.status(200).json({
       success: true,
@@ -107,7 +106,8 @@ export const createFood =
       }
 
       // IMAGE PATH
-      const imagePath = `/uploads/${req.file.filename}`
+      const imagePath =
+  req.file.path
 
       const food =
         await Food.create({
@@ -203,7 +203,8 @@ export const updateFood =
 
       // UPDATE IMAGE
       if (req.file) {
-        food.image = `/uploads/${req.file.filename}`
+        food.image =
+  req.file.path
       }
 
       const updatedFood =

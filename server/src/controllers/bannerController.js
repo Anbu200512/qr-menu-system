@@ -37,7 +37,7 @@ export const createBanner =
 
       const image =
         req.file
-          ? `/uploads/${req.file.filename}`
+          ? req.file.path
           : ""
 
       const banner =
@@ -110,7 +110,7 @@ banner.priority =
 
       // IMAGE
       if (req.file) {
-        banner.image = `/uploads/${req.file.filename}`
+        banner.image = req.file.path
       }
 
       await banner.save()

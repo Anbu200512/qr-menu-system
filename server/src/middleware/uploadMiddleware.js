@@ -1,49 +1,28 @@
 import multer from "multer"
- import path from "path"
-// STORAGE
-const storage =
-  multer.diskStorage({
-    destination: (
-      req,
-      file,
-      cb
-    ) => {
-      cb(null, "uploads/")
-    },
+import { CloudinaryStorage } from "multer-storage-cloudinary"
+import cloudinary from "../config/cloudinary.js"
 
-   
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "qr-menu-system",
+    allowed_formats: [
+      "jpg",
+      "jpeg",
+      "png",
+      "webp",
+    ],
+  },
+})
 
-filename: (req, file, cb) => {
-  cb(
-    null,
-    Date.now() + ".webp"
-  )
-},
-  })
-
-// FILE FILTER
-const fileFilter = (
-  req,
-  file,
-  cb
-) => {
-  if (
-    file.mimetype.startsWith(
-      "image"
-    )
-  ) {
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
     cb(null, true)
   } else {
-    cb(
-      new Error(
-        "Only image files allowed"
-      ),
-      false
-    )
+    cb(new Error("Only image files allowed"), false)
   }
 }
 
-// EXPORT
 const upload = multer({
   storage,
   fileFilter,
