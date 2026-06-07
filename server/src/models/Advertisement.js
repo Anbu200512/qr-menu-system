@@ -8,13 +8,23 @@ const advertisementSchema =
         required: true,
       },
 
-      description: {
-        type: String,
-      },
+      description: String,
 
       image: {
         type: String,
         required: true,
+      },
+
+      link: String,
+
+      ctaText: {
+        type: String,
+        default: "Learn More",
+      },
+
+      priority: {
+        type: Number,
+        default: 1,
       },
 
       isActive: {

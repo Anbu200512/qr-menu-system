@@ -1,269 +1,131 @@
-import {
-  useContext,
-  useState,
-} from "react"
 
 import {
-  FaTimes,
-  FaPlus,
-  FaMinus,
-  FaTrash,
-} from "react-icons/fa"
-
-import toast from "react-hot-toast"
-
-import { CartContext } from "../../context/CartContext"
-
-import { placeOrder } from "../../services/orderService"
-
-function CartDrawer() {
-  const {
-    cartItems,
-    totalAmount,
-    isCartOpen,
-    setIsCartOpen,
-    increaseQuantity,
-    decreaseQuantity,
-    removeItem,
-    clearCart,
-  } = useContext(CartContext)
-
-  const [customerName, setCustomerName] =
-    useState("")
-
-  const [tableNumber, setTableNumber] =
-    useState("")
-
-  const [loading, setLoading] =
-    useState(false)
-
-  // PLACE ORDER
-  const handlePlaceOrder =
-    async () => {
-      if (
-        !customerName ||
-        !tableNumber
-      ) {
-        toast.error(
-          "Enter customer details"
-        )
-
-        return
-      }
-
-      try {
-        setLoading(true)
-
-        const orderData = {
-          customerName,
-          tableNumber,
-          items: cartItems.map((item) => ({
-            food: item._id,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            image: item.image,
-          })),
-          totalAmount,
-        }
-
-        await placeOrder(orderData)
-
-        toast.success(
-          "Order placed successfully"
-        )
-
-        // CLEAR CART
-        clearCart()
-
-        // RESET FORM
-        setCustomerName("")
-
-        setTableNumber("")
-
-        // CLOSE DRAWER
-        setIsCartOpen(false)
-      } catch (error) {
-        console.log(error)
-
-        toast.error("Order Failed")
-      } finally {
-        setLoading(false)
-      }
-    }
+  X,
+  ShoppingBag,
+  Plus,
+  Minus,
+  Trash2,
+} from "lucide-react"
+function CartDrawer({
+  isCartOpen,
+  setIsCartOpen,
+  cart,
+  updateQuantity,
+  removeFromCart,
+  getCartTotal,
+  setShowTableModal,
+}) {
+  if (!isCartOpen) return null
 
   return (
-    <>
-      {/* Overlay */}
-      {isCartOpen && (
-        <div
-          onClick={() =>
-            setIsCartOpen(false)
-          }
-          className="fixed inset-0 bg-black/40 z-40"
-        />
-      )}
-
-      {/* Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white shadow-2xl z-50 transition-all duration-300 flex flex-col ${
-          isCartOpen
-            ? "translate-x-0"
-            : "translate-x-full"
-        }`}
-      >
-        {/* Header */}
-        <div className="flex justify-between items-center p-5 border-b">
-          <h2 className="text-3xl font-bold">
-            Your Cart
-          </h2>
-
-          <button
-            onClick={() =>
-              setIsCartOpen(false)
-            }
-            className="text-2xl"
-          >
-            <FaTimes />
-          </button>
-        </div>
-
-        {/* Empty Cart */}
-        {cartItems.length === 0 ? (
-          <div className="flex-1 flex justify-center items-center text-gray-400 text-2xl font-semibold">
-            Cart is Empty
-          </div>
-        ) : (
-          <>
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-5">
-              {cartItems.map((item) => (
-                <div
-                  key={item._id}
-                  className="flex gap-4 bg-gray-50 rounded-2xl p-4"
-                >
-                  {/* Image */}
-                  <img
-                    src={` ${import.meta.env.VITE_API_URL}${item.image}`}
-                    alt={item.name}
-                    className="w-24 h-24 object-cover rounded-xl"
-                  />
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <div className="flex justify-between">
-                      <h3 className="font-bold text-lg">
-                        {item.name}
-                      </h3>
-
-                      <button
-                        onClick={() =>
-                          removeItem(
-                            item._id
-                          )
-                        }
-                        className="text-red-500"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-
-                    <p className="text-green-600 font-bold mt-2">
-                     ₹{Number(item.price) * Number(item.quantity)}
-                    </p>
-
-                    {/* Quantity */}
-                    <div className="flex items-center gap-3 mt-4">
-                      {/* Decrease */}
-                      <button
-                        onClick={() =>
-                          decreaseQuantity(
-                            item._id
-                          )
-                        }
-                        className="bg-gray-200 p-2 rounded-lg"
-                      >
-                        <FaMinus />
-                      </button>
-
-                      {/* Quantity */}
-                      <span className="font-bold text-lg">
-                        {item.quantity}
-                      </span>
-
-                      {/* Increase */}
-                      <button
-                        onClick={() =>
-                          increaseQuantity(
-                            item._id
-                          )
-                        }
-                        className="bg-green-600 text-white p-2 rounded-lg"
-                      >
-                        <FaPlus />
-                      </button>
+    
+                  <div
+                    className="fp-overlay"
+                    onClick={() => setIsCartOpen(false)}
+                  >
+                    <div
+                      className="fp-cart-drawer"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="fp-cart-header">
+                        <div className="fp-cart-header-inner">
+                          <div>
+                            <div className="fp-cart-title">Your Cart</div>
+                            <div className="fp-cart-subtitle">
+                              {cart.length} item{cart.length !== 1 ? "s" : ""}{" "}
+                              selected
+                            </div>
+                          </div>
+                          <button
+                            className="fp-cart-close"
+                            onClick={() => setIsCartOpen(false)}
+                          >
+                            <X />
+                          </button>
+                        </div>
+                      </div>
+                      {cart.length === 0 ? (
+                        <div className="fp-cart-empty">
+                          <div className="fp-cart-empty-icon">
+                            <ShoppingBag />
+                          </div>
+                          <p>Your cart is empty</p>
+                          <small>Add delicious items from our menu</small>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="fp-cart-items">
+                            {cart.map((item) => (
+                              <div key={item._id} className="fp-cart-item">
+                                <img
+        src={item.image}
+        alt={item.name}
+        loading="lazy"
+      />
+                                <div className="fp-cart-item-info">
+                                  <div className="fp-cart-item-name">
+                                    {item.name}
+                                  </div>
+                                  <div className="fp-cart-item-sub">
+                                    {item.isVeg ? "Vegetarian" : "Non-Veg"}
+                                  </div>
+                                  <div className="fp-cart-item-price">
+                                    ₹{Number(item.price) * Number(item.quantity)}
+                                  </div>
+                                  <div className="fp-cart-item-actions">
+                                    <div className="fp-qty-ctrl">
+                                      <button
+                                        className="fp-qty-btn"
+                                        onClick={() =>
+                                          updateQuantity(
+                                            item._id,
+                                            item.quantity - 1
+                                          )
+                                        }
+                                      >
+                                        <Minus size={10} />
+                                      </button>
+                                      <span className="fp-qty-num">
+                                        {item.quantity}
+                                      </span>
+                                      <button
+                                        className="fp-qty-btn"
+                                        onClick={() =>
+                                          updateQuantity(
+                                            item._id,
+                                            item.quantity + 1
+                                          )
+                                        }
+                                      >
+                                        <Plus size={10} />
+                                      </button>
+                                    </div>
+                                    <button
+                                      className="fp-cart-remove"
+                                      onClick={() => removeFromCart(item._id)}
+                                    >
+                                      <Trash2 size={12} /> Remove
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="fp-cart-footer">
+                            <button
+                              className="fp-checkout-btn"
+                              onClick={() => setShowTableModal(true)}
+                            >
+                              <span>Proceed to Order</span>
+                              <strong>₹{getCartTotal()}</strong>
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
 
-            {/* Footer */}
-            <div className="border-t p-5">
-              {/* Customer Details */}
-              <div className="space-y-3 mb-5">
-                <input
-                  type="text"
-                  placeholder="Customer Name"
-                  value={customerName}
-                  onChange={(e) =>
-                    setCustomerName(
-                      e.target.value
-                    )
-                  }
-                  className="w-full border p-4 rounded-2xl outline-none focus:ring-2 focus:ring-green-500"
-                />
-
-                <input
-                  type="text"
-                  placeholder="Table Number"
-                  value={tableNumber}
-                  onChange={(e) =>
-                    setTableNumber(
-                      e.target.value
-                    )
-                  }
-                  className="w-full border p-4 rounded-2xl outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
-
-              {/* Total */}
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="text-2xl font-bold">
-                  Total
-                </h3>
-
-                <p className="text-3xl font-bold text-green-600">
-                  ₹{totalAmount}
-                </p>
-              </div>
-
-              {/* Order Button */}
-              <button
-                onClick={handlePlaceOrder}
-                disabled={loading}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-2xl text-lg font-semibold transition-all"
-              >
-                {loading
-                  ? "Placing Order..."
-                  : "Place Order"}
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </>
-  )
+                 )
 }
 
 export default CartDrawer

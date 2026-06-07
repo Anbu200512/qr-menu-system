@@ -1,93 +1,139 @@
 import {
-  useContext,
-} from "react"
+  Heart,
+  Award,
+  Star,
+  Clock,
+  Plus,
+  Minus,
+} from "lucide-react"
 
-import {
-  FaLeaf,
-  FaDrumstickBite,
-  FaFire,
-  FaShoppingCart,
-} from "react-icons/fa"
+function FoodCard({
+  food,
+  cart = [],
+  favorites = [],
+  addToCart,
+  updateQuantity,
+  toggleFavorite,
+}) {
+  const cartItem = cart.find(
+    (item) => item._id === food._id
+  )
 
-import { CartContext } from "../../context/CartContext"
-
-function FoodCard({ food }) {
-  const { addToCart } =
-    useContext(CartContext)
+  const isFav = favorites.find(
+    (item) => item._id === food._id
+  )
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-      {/* Image Section */}
-      <div className="relative">
+    <div className="fp-food-card">
+      <div className="fp-food-img-wrap">
         <img
-          src={` ${import.meta.env.VITE_API_URL}${food.image}`}
+          src={food.image}
           alt={food.name}
-          className="w-full h-56 object-cover"
+          loading="lazy"
         />
 
-        {/* Veg / Non-Veg Badge */}
-        <div className="absolute top-4 left-4">
-          {food.isVeg ? (
-            <span className="bg-green-500 text-white px-3 py-1 rounded-full flex items-center gap-2 text-sm shadow-md">
-              <FaLeaf />
+        <button
+          className="fp-favorite-btn"
+          onClick={() =>
+            toggleFavorite(food)
+          }
+        >
+          <Heart
+            size={14}
+            fill={
+              isFav
+                ? "#ef4444"
+                : "transparent"
+            }
+            color={
+              isFav
+                ? "#ef4444"
+                : "white"
+            }
+          />
+        </button>
 
-              Veg
-            </span>
-          ) : (
-            <span className="bg-red-500 text-white px-3 py-1 rounded-full flex items-center gap-2 text-sm shadow-md">
-              <FaDrumstickBite />
-
-              Non Veg
-            </span>
-          )}
-        </div>
-
-        {/* Popular Badge */}
         {food.isPopular && (
-          <div className="absolute top-4 right-4">
-            <span className="bg-orange-500 text-white px-3 py-1 rounded-full flex items-center gap-2 text-sm shadow-md">
-              <FaFire />
-
-              Popular
-            </span>
+          <div className="fp-bestseller-tag">
+            <Award size={9} />
+            Best
           </div>
         )}
       </div>
 
-      {/* Content */}
-      <div className="p-5">
-        {/* Title + Category */}
-        <div className="flex justify-between items-start gap-3">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-            {food.name}
-          </h2>
+      <div className="fp-food-info">
+        <div className="fp-food-name">
+          {food.name}
+        </div>
 
-          <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm whitespace-nowrap">
-            {food.category?.name}
+        <div className="fp-food-meta">
+          <span className="fp-food-meta-item">
+            <Star
+              size={10}
+              style={{
+                fill: "#f59e0b",
+                color: "#f59e0b",
+              }}
+            />
+            {food.rating || 4.5}
+          </span>
+
+          <span className="fp-food-meta-sep">
+            ·
+          </span>
+
+          <span className="fp-food-meta-item">
+            <Clock size={10} />
+            {food.prepTime || 20}m
           </span>
         </div>
 
-        {/* Description */}
-        <p className="text-gray-500 dark:text-gray-300 mt-3 line-clamp-2 leading-relaxed">
-          {food.description}
-        </p>
-
-        {/* Bottom */}
-        <div className="mt-6 flex justify-between items-center">
-          {/* Price */}
-          <span className="text-3xl font-bold text-green-600">
+        <div className="fp-food-footer">
+          <span className="fp-food-price">
             ₹{food.price}
           </span>
 
-          {/* Add to Cart */}
-          <button
-            onClick={() => addToCart(food)}
-            className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-2xl transition-all flex items-center gap-2 shadow-md hover:scale-105"
-          >
-            <FaShoppingCart />
+          {cartItem ? (
+            <div className="fp-qty-ctrl">
+              <button
+                className="fp-qty-btn"
+                onClick={() =>
+                  updateQuantity(
+                    food._id,
+                    cartItem.quantity - 1
+                  )
+                }
+              >
+                <Minus size={10} />
+              </button>
 
-            Add
-          </button>
+              <span className="fp-qty-num">
+                {cartItem.quantity}
+              </span>
+
+              <button
+                className="fp-qty-btn"
+                onClick={() =>
+                  updateQuantity(
+                    food._id,
+                    cartItem.quantity + 1
+                  )
+                }
+              >
+                <Plus size={10} />
+              </button>
+            </div>
+          ) : (
+            <button
+              className="fp-add-btn"
+              onClick={() =>
+                addToCart(food)
+              }
+            >
+              <Plus size={11} />
+              Add
+            </button>
+          )}
         </div>
       </div>
     </div>

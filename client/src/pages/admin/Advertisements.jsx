@@ -1,16 +1,13 @@
-import {
-  useEffect,
-  useState,
-} from "react"
+import { useEffect, useState } from "react";
 
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 
 import {
   getAdvertisements,
   createAdvertisement,
   updateAdvertisement,
   deleteAdvertisement,
-} from "../../services/advertisementService"
+} from "../../services/advertisementService";
 
 import {
   FaSearch,
@@ -22,152 +19,160 @@ import {
   FaImage,
   FaToggleOn,
   FaToggleOff,
-} from "react-icons/fa"
+} from "react-icons/fa";
 
 function Advertisements() {
-  const [advertisements, setAdvertisements] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
-  const advertisementsPerPage = 6
+  const [advertisements, setAdvertisements] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const advertisementsPerPage = 6;
 
   // MODALS
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [showEditModal, setShowEditModal] = useState(false)
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   // FORM
-const [bannerForm, setBannerForm] = useState({
-  title: "",
-  description: "",
-  isActive: true,
-  image: null,
-})
-  const [selectedAdvertisement, setSelectedAdvertisement] = useState(null)
+  const [bannerForm, setBannerForm] = useState({
+    title: "",
+    description: "",
+    link: "",
+    ctaText: "Visit Website",
+    priority: 1,
+    isActive: true,
+    image: null,
+  });
+  const [selectedAdvertisement, setSelectedAdvertisement] = useState(null);
 
   // FETCH advertisements
   const fetchadvertisements = async () => {
     try {
-      const data = await getAdvertisements()
-      setAdvertisements(data?.advertisements || [])
+      const data = await getAdvertisements();
+      setAdvertisements(data?.advertisements || []);
     } catch (error) {
-      console.log(error)
-      toast.error("Failed to fetch advertisements")
+      console.log(error);
+      toast.error("Failed to fetch advertisements");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     const loadAdvertisements = async () => {
-      await fetchadvertisements()
-    }
+      await fetchadvertisements();
+    };
 
-    loadAdvertisements()
-  }, [])
+    loadAdvertisements();
+  }, []);
 
   // HANDLE INPUT
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
+    const { name, value, type, checked } = e.target;
     setBannerForm({
       ...bannerForm,
       [name]: type === "checkbox" ? checked : value,
-    })
-  }
+    });
+  };
 
   // HANDLE IMAGE
   const handleImageChange = (e) => {
     setBannerForm({
       ...bannerForm,
       image: e.target.files[0],
-    })
-  }
+    });
+  };
 
   // RESET FORM
   const resetForm = () => {
     setBannerForm({
-  title: "",
-  description: "",
-  isActive: true,
-  image: null,
-})
-  }
+      title: "",
+      description: "",
+      link: "",
+      ctaText: "Visit Website",
+      priority: 1,
+      isActive: true,
+      image: null,
+    });
+  };
 
   // ADD ADVERTISEMENT
   const handleAddAdvertisement = async () => {
-
-    console.log("FORM:", bannerForm)
+    console.log("FORM:", bannerForm);
     if (!bannerForm.title.trim()) {
-      return toast.error("Title required")
+      return toast.error("Title required");
     }
     if (!bannerForm.image) {
-      return toast.error("Banner image required")
+      return toast.error("Banner image required");
     }
     try {
-      const formData = new FormData()
+      const formData = new FormData();
       Object.keys(bannerForm).forEach((key) => {
         if (bannerForm[key] !== null) {
-          formData.append(key, bannerForm[key])
+          formData.append(key, bannerForm[key]);
         }
-      })
+      });
 
-      console.log("Sending request...")
+      console.log("Sending request...");
 
-      await createAdvertisement(formData)
-      toast.success("Banner added successfully")
-      resetForm()
-      setShowAddModal(false)
-      fetchadvertisements()
+      await createAdvertisement(formData);
+      toast.success("Banner added successfully");
+      resetForm();
+      setShowAddModal(false);
+      fetchadvertisements();
     } catch (error) {
-      console.log(error)
-      toast.error("Add advertisement failed")
+      console.log(error);
+      toast.error("Add advertisement failed");
     }
-  }
+  };
 
   // EDIT ADVERTISEMENT
   const handleEditAdvertisement = async () => {
     try {
-      const formData = new FormData()
+      const formData = new FormData();
       Object.keys(bannerForm).forEach((key) => {
         if (bannerForm[key] !== null) {
-          formData.append(key, bannerForm[key])
+          formData.append(key, bannerForm[key]);
         }
-      })
-      await updateAdvertisement(
-  selectedAdvertisement._id,
-  formData
-)
-      toast.success("Banner updated successfully")
-      setShowEditModal(false)
-      fetchadvertisements()
+      });
+      await updateAdvertisement(selectedAdvertisement._id, formData);
+      toast.success("Banner updated successfully");
+      setShowEditModal(false);
+      fetchadvertisements();
     } catch (error) {
-      console.log(error)
-      toast.error("Update failed")
+      console.log(error);
+      toast.error("Update failed");
     }
-  }
+  };
 
   // DELETE ADVERTISEMENT
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Delete this advertisement?")
-    if (!confirmDelete) return
+    const confirmDelete = window.confirm("Delete this advertisement?");
+    if (!confirmDelete) return;
     try {
-      await deleteAdvertisement(id)
-      toast.success("Advertisement deleted")
-      fetchadvertisements()
+      await deleteAdvertisement(id);
+      toast.success("Advertisement deleted");
+      fetchadvertisements();
     } catch (error) {
-      console.log(error)
-      toast.error("Delete failed")
+      console.log(error);
+      toast.error("Delete failed");
     }
-  }
+  };
 
   // FILTER
-  const filteredadvertisements = (advertisements || []).filter((advertisement) =>
-    advertisement.title?.toLowerCase().includes(search.toLowerCase())
-  )
+  const filteredadvertisements = (advertisements || []).filter(
+    (advertisement) =>
+      advertisement.title?.toLowerCase().includes(search.toLowerCase()),
+  );
 
   // PAGINATION
-  const totalPages = Math.ceil(filteredadvertisements.length / advertisementsPerPage)
-  const startIndex = (currentPage - 1) * advertisementsPerPage
-  const currentadvertisements = filteredadvertisements.slice(startIndex, startIndex + advertisementsPerPage)
+  const totalPages = Math.ceil(
+    filteredadvertisements.length / advertisementsPerPage,
+  );
+  const startIndex = (currentPage - 1) * advertisementsPerPage;
+  const currentadvertisements = filteredadvertisements.slice(
+    startIndex,
+    startIndex + advertisementsPerPage,
+  );
 
   // LOADING
   if (loading) {
@@ -180,7 +185,7 @@ const [bannerForm, setBannerForm] = useState({
           </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -188,7 +193,7 @@ const [bannerForm, setBannerForm] = useState({
       {/* HEADER */}
       <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-          advertisements 
+          advertisements
         </h1>
         <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
           Manage homepage promotional advertisements
@@ -198,14 +203,17 @@ const [bannerForm, setBannerForm] = useState({
       {/* SEARCH + ADD BAR */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="flex-1 relative">
-          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" size={16} />
+          <FaSearch
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+            size={16}
+          />
           <input
             type="text"
             placeholder="Search advertisements..."
             value={search}
             onChange={(e) => {
-              setSearch(e.target.value)
-              setCurrentPage(1)
+              setSearch(e.target.value);
+              setCurrentPage(1);
             }}
             className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-10 pr-4 py-3 outline-none focus:border-[#c84b2f] transition-all text-gray-800 dark:text-white placeholder-gray-400"
           />
@@ -230,9 +238,7 @@ const [bannerForm, setBannerForm] = useState({
         <div className="grid grid-cols-12 bg-gray-50 dark:bg-gray-900/50 px-5 py-3 border-b border-gray-100 dark:border-gray-700 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
           <div className="col-span-2">Image</div>
           <div className="col-span-3">Title</div>
-          <div className="col-span-4">
-  Description
-</div>
+          <div className="col-span-4">Description</div>
           <div className="col-span-1">Status</div>
           <div className="col-span-2 text-right">Actions</div>
         </div>
@@ -244,20 +250,22 @@ const [bannerForm, setBannerForm] = useState({
           >
             <div className="col-span-2">
               <img
-  src={banner.image}
-  alt={banner.title}
-  className="w-16 h-12 rounded-lg object-cover"
-/>
+                src={banner.image}
+                alt={banner.title}
+                className="w-16 h-12 rounded-lg object-cover"
+              />
             </div>
             <div className="col-span-3">
-              <p className="font-semibold text-gray-800 dark:text-white">{banner.title}</p>
+              <p className="font-semibold text-gray-800 dark:text-white">
+                {banner.title}
+              </p>
             </div>
             <div className="col-span-3">
               <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-  {banner.description}
-</p>
+                {banner.description}
+              </p>
             </div>
-            
+
             <div className="col-span-1">
               <span
                 className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${
@@ -266,22 +274,28 @@ const [bannerForm, setBannerForm] = useState({
                     : "bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400"
                 }`}
               >
-                {banner.isActive ? <FaToggleOn size={10} /> : <FaToggleOff size={10} />}
+                {banner.isActive ? (
+                  <FaToggleOn size={10} />
+                ) : (
+                  <FaToggleOff size={10} />
+                )}
                 {banner.isActive ? "Active" : "Inactive"}
               </span>
             </div>
             <div className="col-span-2 flex justify-end gap-2">
               <button
                 onClick={() => {
-                  setSelectedAdvertisement(banner)
+                  setSelectedAdvertisement(banner);
                   setBannerForm({
-  title: banner.title,
-  description:
-    banner.description,
-  isActive: banner.isActive,
-  image: null,
-})
-                  setShowEditModal(true)
+                    title: banner.title,
+                    description: banner.description,
+                    link: banner.link || "",
+                    ctaText: banner.ctaText || "Visit Website",
+                    priority: banner.priority || 1,
+                    isActive: banner.isActive,
+                    image: null,
+                  });
+                  setShowEditModal(true);
                 }}
                 className="p-2 rounded-lg text-[#c84b2f] hover:bg-[#c84b2f]/10 transition-all"
               >
@@ -306,30 +320,32 @@ const [bannerForm, setBannerForm] = useState({
             className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden shadow-sm"
           >
             <img
-  src={banner.image}
-  alt={banner.title}
-  className="w-full h-36 object-cover"
-/>
+              src={banner.image}
+              alt={banner.title}
+              className="w-full h-36 object-cover"
+            />
             <div className="p-4">
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <h3 className="font-bold text-lg text-gray-800 dark:text-white">{banner.title}</h3>
+                  <h3 className="font-bold text-lg text-gray-800 dark:text-white">
+                    {banner.title}
+                  </h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-  {banner.description}
-</p>
+                    {banner.description}
+                  </p>
                 </div>
                 <div className="flex gap-1">
                   <button
                     onClick={() => {
-                      setSelectedAdvertisement(banner)
+                      setSelectedAdvertisement(banner);
                       setBannerForm({
                         title: banner.title,
                         description: banner.description,
                         isActive: banner.isActive,
-                        
+
                         image: null,
-                      })
-                      setShowEditModal(true)
+                      });
+                      setShowEditModal(true);
                     }}
                     className="p-2 rounded-lg text-[#c84b2f] hover:bg-[#c84b2f]/10"
                   >
@@ -344,7 +360,6 @@ const [bannerForm, setBannerForm] = useState({
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 mt-3">
-                
                 <span
                   className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${
                     banner.isActive
@@ -352,7 +367,11 @@ const [bannerForm, setBannerForm] = useState({
                       : "bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400"
                   }`}
                 >
-                  {banner.isActive ? <FaToggleOn size={10} /> : <FaToggleOff size={10} />}
+                  {banner.isActive ? (
+                    <FaToggleOn size={10} />
+                  ) : (
+                    <FaToggleOff size={10} />
+                  )}
                   {banner.isActive ? "Active" : "Inactive"}
                 </span>
               </div>
@@ -410,14 +429,14 @@ const [bannerForm, setBannerForm] = useState({
       {/* ADD MODAL */}
       {showAddModal && (
         <Modal
-  title="Add New Advertisement"
-  onClose={() => {
-    setShowAddModal(false)
-    resetForm()
-  }}
-  onSubmit={handleAddAdvertisement}
-  submitText="Add Advertisement"
->
+          title="Add New Advertisement"
+          onClose={() => {
+            setShowAddModal(false);
+            resetForm();
+          }}
+          onSubmit={handleAddAdvertisement}
+          submitText="Add Advertisement"
+        >
           <BannerForm
             bannerForm={bannerForm}
             handleChange={handleChange}
@@ -429,14 +448,14 @@ const [bannerForm, setBannerForm] = useState({
       {/* EDIT MODAL */}
       {showEditModal && (
         <Modal
-  title="Edit Advertisement"
-  onClose={() => {
-    setShowEditModal(false)
-    resetForm()
-  }}
-  onSubmit={handleEditAdvertisement}
-  submitText="Update Advertisement"
->
+          title="Edit Advertisement"
+          onClose={() => {
+            setShowEditModal(false);
+            resetForm();
+          }}
+          onSubmit={handleEditAdvertisement}
+          submitText="Update Advertisement"
+        >
           <BannerForm
             bannerForm={bannerForm}
             handleChange={handleChange}
@@ -445,7 +464,7 @@ const [bannerForm, setBannerForm] = useState({
         </Modal>
       )}
     </div>
-  )
+  );
 }
 
 // MODAL COMPONENT
@@ -454,8 +473,13 @@ function Modal({ title, onClose, onSubmit, submitText, children }) {
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4 overflow-y-auto">
       <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-bold text-gray-800 dark:text-white">{title}</h2>
-          <button onClick={onClose} className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          >
             <FaTimes size={18} />
           </button>
         </div>
@@ -476,7 +500,7 @@ function Modal({ title, onClose, onSubmit, submitText, children }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // BANNER FORM COMPONENT
@@ -492,19 +516,50 @@ function BannerForm({ bannerForm, handleChange, handleImageChange }) {
         className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 outline-none focus:border-[#c84b2f] transition-all text-gray-800 dark:text-white placeholder-gray-400"
       />
       <textarea
-  name="description"
-  placeholder="Advertisement Description"
-  value={bannerForm.description}
+        name="description"
+        placeholder="Advertisement Description"
+        value={bannerForm.description}
         onChange={handleChange}
         rows="3"
         className="md:col-span-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 outline-none focus:border-[#c84b2f] transition-all text-gray-800 dark:text-white placeholder-gray-400"
+      />
+      <input
+        type="text"
+        name="link"
+        placeholder="Website URL"
+        value={bannerForm.link}
+        onChange={handleChange}
+        className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 outline-none focus:border-[#c84b2f]"
+      />
+
+      <input
+        type="text"
+        name="ctaText"
+        placeholder="Button Text"
+        value={bannerForm.ctaText}
+        onChange={handleChange}
+        className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 outline-none focus:border-[#c84b2f]"
+      />
+
+      <input
+        type="number"
+        name="priority"
+        placeholder="Priority"
+        value={bannerForm.priority}
+        onChange={handleChange}
+        className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 outline-none focus:border-[#c84b2f]"
       />
       <label className="md:col-span-2 flex items-center gap-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 cursor-pointer">
         <FaImage className="text-gray-400" />
         <span className="text-sm text-gray-500 dark:text-gray-400">
           {bannerForm.image ? bannerForm.image.name : "Choose Banner Image"}
         </span>
-        <input type="file" onChange={handleImageChange} className="hidden" accept="image/*" />
+        <input
+          type="file"
+          onChange={handleImageChange}
+          className="hidden"
+          accept="image/*"
+        />
       </label>
       <label className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
         <input
@@ -517,7 +572,7 @@ function BannerForm({ bannerForm, handleChange, handleImageChange }) {
         Active Banner (shown on homepage)
       </label>
     </div>
-  )
+  );
 }
 
-export default Advertisements
+export default Advertisements;

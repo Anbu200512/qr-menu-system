@@ -1,36 +1,63 @@
+import { UtensilsCrossed } from "lucide-react"
+
 function CategoryTabs({
   categories,
   selectedCategory,
   setSelectedCategory,
+  setVisibleItems,
+  categoryIcons,
 }) {
   return (
-    <div className="flex gap-3 overflow-x-auto mb-6">
-      <button
-        onClick={() => setSelectedCategory("All")}
-        className={`px-4 py-2 rounded-full ${
-          selectedCategory === "All"
-            ? "bg-green-600 text-white"
-            : "bg-gray-200 dark:bg-gray-700"
-        }`}
-      >
-        All
-      </button>
-
-      {categories.map((category) => (
+    <div className="fp-categories-section">
+      <div className="fp-categories-scroll">
         <button
-          key={category._id}
-          onClick={() =>
-            setSelectedCategory(category.name)
-          }
-          className={`px-4 py-2 rounded-full whitespace-nowrap ${
-            selectedCategory === category.name
-              ? "bg-green-600 text-white"
-              : "bg-gray-200 dark:bg-gray-700"
+          onClick={() => {
+            setSelectedCategory("All")
+            setVisibleItems(8)
+          }}
+          className={`fp-cat-pill ${
+            selectedCategory === "All"
+              ? "active"
+              : ""
           }`}
         >
-          {category.name}
+          <UtensilsCrossed size={13} />
+          All
         </button>
-      ))}
+
+        {categories.map((category) => (
+          <button
+            key={category._id}
+            onClick={() => {
+              setSelectedCategory(
+                category.name
+              )
+              setVisibleItems(8)
+            }}
+            className={`fp-cat-pill ${
+              selectedCategory ===
+              category.name
+                ? "active"
+                : ""
+            }`}
+          >
+            {categoryIcons[
+              category.name
+            ] || (
+              <UtensilsCrossed
+                size={13}
+              />
+            )}
+
+            {category.name.length > 10
+              ? category.name.slice(
+                  0,
+                  9
+                ) + "…"
+              : category.name}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

@@ -24,26 +24,32 @@ export const createAdvertisement = async (req, res) => {
 
     console.log(req.body)
 console.log(req.file)
-    const {
-      title,
-      description,
-    } = req.body
+   const {
+  title,
+  description,
+  link,
+  ctaText,
+  priority,
+} = req.body
 
     const image = req.file
       ? req.file.path
       : ""
 
     const advertisement =
-      await Advertisement.create({
-        title,
-        description,
+  await Advertisement.create({
+    title,
+    description,
+    image,
 
-        isActive:
-          req.body.isActive ===
-          "true",
+    link,
+    ctaText,
+    priority,
 
-        image,
-      })
+    isActive:
+      req.body.isActive ===
+      "true",
+  })
 
     res.status(201).json({
       success: true,
@@ -76,11 +82,18 @@ export const updateAdvertisement = async (req, res) => {
     const {
       title,
       description,
+      link,
+      ctaText,
+      priority,
     } = req.body
 
     advertisement.title = title
     advertisement.description =
       description
+
+    advertisement.link = link
+    advertisement.ctaText = ctaText
+    advertisement.priority = priority
 
     advertisement.isActive =
       req.body.isActive ===

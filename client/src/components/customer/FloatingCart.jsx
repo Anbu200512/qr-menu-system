@@ -1,35 +1,51 @@
 import {
-  useContext,
-} from "react"
+  ShoppingBag,
+  ChevronRight,
+} from "lucide-react"
 
-import { FaShoppingCart } from "react-icons/fa"
-
-import { CartContext } from "../../context/CartContext"
-
-function FloatingCart() {
-  const {
-    cartItems,
-    totalAmount,
-    setIsCartOpen,
-  } = useContext(CartContext)
+function FloatingCart({
+  cart,
+  getCartItemCount,
+  getCartTotal,
+  setIsCartOpen,
+}) {
+  if (cart.length === 0) return null
 
   return (
-    <button
-      onClick={() =>
-        setIsCartOpen(true)
-      }
-      className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 z-40 transition-all"
-    >
-      <FaShoppingCart className="text-2xl" />
+    <div className="fp-floating-cart">
+      <button
+        className="fp-floating-cart-btn"
+        onClick={() => setIsCartOpen(true)}
+      >
+        <div className="fp-floating-cart-left">
+          <div className="fp-floating-cart-icon">
+            <ShoppingBag />
+          </div>
 
-      <div className="text-left">
-        <p className="font-bold">
-          {cartItems.length} Items
-        </p>
+          <div>
+            <div className="fp-floating-cart-label">
+              {getCartItemCount()} item
+              {getCartItemCount() !== 1 ? "s" : ""} added
+            </div>
 
-        <p>₹{totalAmount}</p>
-      </div>
-    </button>
+            <div className="fp-floating-cart-sublabel">
+              Tap to view cart
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="fp-floating-cart-total">
+            ₹{getCartTotal()}
+          </div>
+
+          <div className="fp-floating-cart-cta">
+            View Cart
+            <ChevronRight size={12} />
+          </div>
+        </div>
+      </button>
+    </div>
   )
 }
 
