@@ -19,9 +19,9 @@ function DesktopAdvertisement({ activeAd }) {
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
-        <div className="absolute top-3 left-3">
-          <span className="bg-orange-500 text-white text-xs px-3 py-1 rounded-full">
-            Sponsored
+        <div className="absolute top-5 left-5">
+          <span className="flex items-center justify-center w-32 h-6 bg-white text-[#c84b2f] text-sm font-bold rounded-full border border-white/30">
+            ✦ SPONSORED
           </span>
         </div>
 

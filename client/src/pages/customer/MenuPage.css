@@ -581,7 +581,7 @@
 }
 
 /* Special */
-.fp-special-section {
+/* .fp-special-section {
   margin-top: 22px;
 }
 .fp-special-section-head {
@@ -700,7 +700,7 @@
 .fp-special-dot:not(.active) {
   width: 4px;
   background: var(--fp-border);
-}
+} */
 
 /* Menu grid */
 .fp-menu-section {

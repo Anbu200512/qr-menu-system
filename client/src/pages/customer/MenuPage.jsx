@@ -104,7 +104,7 @@ function MenuPage() {
   const [visibleItems, setVisibleItems] = useState(8);
 
   // Desktop panel state — null | 'orders' | 'favorites' | 'call' | 'cart' | 'info'
-  const [desktopPanel, setDesktopPanel] = useState(null);
+  const [desktopPanel, setDesktopPanel] = useState("orders");
 
   const [selectedFilters, setSelectedFilters] = useState({
     sortBy: "recommended",
@@ -281,30 +281,25 @@ function MenuPage() {
       selectedFilters,
     });
 
-const activeAds = advertisements.filter(
-  (ad) => ad.isActive
-);
+  const activeAds = advertisements.filter((ad) => ad.isActive);
 
-useEffect(() => {
-  if (activeAds.length <= 1) return;
+  useEffect(() => {
+    if (activeAds.length <= 1) return;
 
-  const timer = setInterval(() => {
-    setCurrentAdIndex((prev) =>
-      (prev + 1) % activeAds.length
-    );
-  }, 3000);
+    const timer = setInterval(() => {
+      setCurrentAdIndex((prev) => (prev + 1) % activeAds.length);
+    }, 3000);
 
-  return () => clearInterval(timer);
-}, [activeAds.length]);
+    return () => clearInterval(timer);
+  }, [activeAds.length]);
 
-useEffect(() => {
-  if (currentAdIndex >= activeAds.length) {
-    setCurrentAdIndex(0);
-  }
-}, [activeAds.length, currentAdIndex]);
+  useEffect(() => {
+    if (currentAdIndex >= activeAds.length) {
+      setCurrentAdIndex(0);
+    }
+  }, [activeAds.length, currentAdIndex]);
 
-const activeAd =
-  activeAds[currentAdIndex] || null;
+  const activeAd = activeAds[currentAdIndex] || null;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -536,6 +531,8 @@ const activeAd =
           setDesktopPanel={setDesktopPanel}
           activeAd={activeAd}
         />
+        {/* Desktop Floating Cart */}
+        
       </div>
 
       {/* ════════════════════════════════════════

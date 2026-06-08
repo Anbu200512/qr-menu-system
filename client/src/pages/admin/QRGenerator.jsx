@@ -1,12 +1,12 @@
-import { useState } from "react"
-import { QRCodeCanvas } from "qrcode.react"
-import { FaPrint, FaDownload, FaQrcode, FaTable, FaLink } from "react-icons/fa"
+import { useState } from "react";
+import { QRCodeCanvas } from "qrcode.react";
+import { FaPrint, FaDownload, FaQrcode, FaTable, FaLink } from "react-icons/fa";
 
 function QRGenerator() {
-  const [tableNumber, setTableNumber] = useState("1")
+  const [tableNumber, setTableNumber] = useState("1");
 
   // UPDATED URL FORMAT
-  const qrValue = `http://localhost:5173/menu/table/${tableNumber}`
+  const qrValue = `http://qr-menu-system-kappa.vercel.app/menu/table/${tableNumber}`;
 
   return (
     <>
@@ -52,7 +52,7 @@ function QRGenerator() {
           {/* HEADER */}
           <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-              QR Generator 
+              QR Generator
             </h1>
             <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
               Generate QR codes for restaurant tables
@@ -61,7 +61,6 @@ function QRGenerator() {
 
           {/* MAIN CARD */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
-            
             {/* TABLE INPUT SECTION */}
             <div className="p-6 border-b border-gray-100 dark:border-gray-700">
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
@@ -69,7 +68,10 @@ function QRGenerator() {
               </label>
               <div className="flex gap-3">
                 <div className="flex-1 relative">
-                  <FaTable className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                  <FaTable
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    size={16}
+                  />
                   <input
                     type="number"
                     min="1"
@@ -128,12 +130,12 @@ function QRGenerator() {
                 {/* DOWNLOAD BUTTON */}
                 <button
                   onClick={() => {
-                    const canvas = document.querySelector("canvas")
-                    const image = canvas.toDataURL("image/png")
-                    const link = document.createElement("a")
-                    link.href = image
-                    link.download = `table-${tableNumber}-qr.png`
-                    link.click()
+                    const canvas = document.querySelector("canvas");
+                    const image = canvas.toDataURL("image/png");
+                    const link = document.createElement("a");
+                    link.href = image;
+                    link.download = `table-${tableNumber}-qr.png`;
+                    link.click();
                   }}
                   className="bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
@@ -146,13 +148,14 @@ function QRGenerator() {
           {/* HELPER NOTE */}
           <div className="mt-6 bg-[#c84b2f]/5 dark:bg-[#c84b2f]/10 rounded-xl p-4 border border-[#c84b2f]/10 dark:border-[#c84b2f]/20">
             <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-              💡 Print this QR code and place it on the table. Customers can scan it to view your menu and place orders directly.
+              💡 Print this QR code and place it on the table. Customers can
+              scan it to view your menu and place orders directly.
             </p>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default QRGenerator
+export default QRGenerator;
